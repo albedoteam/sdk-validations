@@ -12,7 +12,7 @@ namespace AlbedoTeam.Sdk.Validations
 
             AssemblyScanner
                 .FindValidatorsInAssembly(assembly)
-                .ForEach(result => services.AddScoped(result.InterfaceType, result.ValidatorType));
+                .ForEach(result => services.AddSingleton(result.InterfaceType, result.ValidatorType));
 
             return services;
         }
