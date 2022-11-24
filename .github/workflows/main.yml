@@ -78,8 +78,9 @@ jobs:
           api-key: ${{ secrets.NUGET_API_KEY }}
 
       - uses: ./.github/actions/release-creator
+        if: ${{ github.ref_name == 'main' }}
         with:
-          version: ${{ github.version-checker.outputs.version }}
+          version: ${{ steps.version-checker.outputs.version }}
           branch: ${{ github.ref_name }}
           github-token: ${{ github.token }}
         
