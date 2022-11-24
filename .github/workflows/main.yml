@@ -56,6 +56,7 @@ jobs:
         if: ${{ github.ref_name == 'main' }}
         run: |
           dotnet nuget push \
+          --source https://api.nuget.org \
           package/$namespace.$version.nupkg \
           --api-key $api-key \
         env:
@@ -67,6 +68,7 @@ jobs:
         if: ${{ github.ref_name == 'rc' }}
         run: |
           dotnet nuget push \
+          --source https://api.nuget.org \
           package/$namespace.$version.$timestamp-rc.nupkg \
           --api-key ${{ secrets.NUGET_API_KEY }} \
         env:
