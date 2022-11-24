@@ -62,7 +62,6 @@ jobs:
         if: ${{ github.ref_name == 'main' }}
         with:
           version: ${{ steps.version-checker.outputs.version }}
-          branch: ${{ github.ref_name }}
           github_token: ${{ github.token }}
 
       - name: Push Release
