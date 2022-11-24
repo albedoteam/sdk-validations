@@ -17,11 +17,6 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         
-      - name: Add NuGet Source
-        run: dotnet nuget add source $nuget -n nuget
-        env:
-          nuget: https://api.nuget.org/v3/index.json
-
       - name: Add GitHub NuGet Source
         run: dotnet nuget add source $github -n github --password $api_key
         env:
