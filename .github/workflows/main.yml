@@ -24,7 +24,7 @@ jobs:
           api_key: ${{ secrets.NUGET_API_KEY }}
 
       - name: Restore Packages
-        run: dotnet restore -s nuget -s github
+        run: dotnet restore
         
       - name: Build
         run: dotnet build --configuration $configuration --no-restore
