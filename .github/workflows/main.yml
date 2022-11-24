@@ -26,7 +26,8 @@ jobs:
     name: Create Package
     runs-on: ubuntu-latest
     needs: build
-    
+    outputs:
+      version: ${{ steps.version-checker.outputs.version }}
     steps:
     
       - name: Version Checker
@@ -58,9 +59,18 @@ jobs:
           dotnet nuget push \
           package/${{ secrets.PROJECT_NAMESPACE }}.${{ github.version-checker.outputs.version }}.nupkg \
           --api-key ${{ secrets.NUGET_API_KEY }} \
+
       - name: Push RC
         run: |
           dotnet nuget push \
           package/${{ secrets.PROJECT_NAMESPACE }}.${{ github.version-checker.outputs.version }}.${{ github.timestamp.outputs.timestamp }}-rc.nupkg \
           --api-key ${{ secrets.NUGET_API_KEY }}
+
+    release:
+      - name: Create Release & Tag
+        needs: pack
+        uses: ./.github/actions/release-creator
+          with:
+            version: ${{ needs.pack.outputs.version }}
+        
 
