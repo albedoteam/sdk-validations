@@ -18,7 +18,10 @@ jobs:
         uses: actions/setup-dotnet@v3
         
       - name: Restore Packages
-        run: dotnet restore
+        run: dotnet restore -s $nuget -s $github-nuget
+        env:
+          nuget: https://api.nuget.org/v3/index.json
+          github-nuget: https://nuget.pkg.github.com/albedoteam/index.json
         
       - name: Build
         run: dotnet build --configuration $configuration --no-restore
