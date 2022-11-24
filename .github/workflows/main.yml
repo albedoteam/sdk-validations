@@ -40,7 +40,7 @@ jobs:
       - name: Pack Release
         if: ${{ github.ref_name == 'main' }}
         run: |
-          dotnet pack --no-build --no-restore \
+          dotnet pack --no-build \
           --output package \
           --configuration Release \
         
@@ -52,10 +52,10 @@ jobs:
       - name: Pack RC
         if: ${{ github.ref_name == 'rc' }}
         run: | 
-          dotnet pack --no-build --no-restore \
+          dotnet pack --no-build \
           --output package \
           --configuration Debug \
-          --version-suffix ${{ github.timestamp.outputs.timestamp }}-rc \
+          /p:Version=${{ github.version-checker.outputs.version }}.${{ github.timestamp.outputs.timestamp }}.rc \
         
       - name: Push Release
         if: ${{ github.ref_name == 'main' }}
@@ -68,7 +68,7 @@ jobs:
         if: ${{ github.ref_name == 'rc' }}
         run: |
           dotnet nuget push \
-          package/${{ secrets.PROJECT_NAMESPACE }}.${{ github.version-checker.outputs.version }}.${{ github.timestamp.outputs.timestamp }}-rc.nupkg \
+          package/${{ secrets.PROJECT_NAMESPACE }}.${{ github.version-checker.outputs.version }}.${{ github.timestamp.outputs.timestamp }}.rc.nupkg \
           --api-key ${{ secrets.NUGET_API_KEY }}
 
   release:
