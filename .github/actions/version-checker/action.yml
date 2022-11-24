@@ -1,7 +1,9 @@
 name: Version Checker
 description: Check the version of the .csproj file
 outputs:
-  version: ${{ steps.get-version.outputs.version }}
+  version: 
+    description: "Random number"
+    value: ${{ steps.get-version.outputs.version }}
 runs:
   using: "composite"
   steps:
