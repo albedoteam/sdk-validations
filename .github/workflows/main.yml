@@ -58,12 +58,14 @@ jobs:
           --version-suffix ${{ github.timestamp.outputs.timestamp }}-rc \
         
       - name: Push Release
+        if: ${{ github.ref == 'main' }}
         run: |
           dotnet nuget push \
           package/${{ secrets.PROJECT_NAMESPACE }}.${{ github.version-checker.outputs.version }}.nupkg \
           --api-key ${{ secrets.NUGET_API_KEY }} \
 
       - name: Push RC
+        if: ${{ github.ref == 'rc' }}
         run: |
           dotnet nuget push \
           package/${{ secrets.PROJECT_NAMESPACE }}.${{ github.version-checker.outputs.version }}.${{ github.timestamp.outputs.timestamp }}-rc.nupkg \
