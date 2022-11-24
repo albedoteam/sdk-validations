@@ -1,0 +1,66 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - rc
+      - main
+      
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        
+      - name: Restore Packages
+        run: dotnet restore
+        
+      - name: Build
+        run: dotnet build --configuration ${{ github.ref == 'rc' && 'Debug' || 'Release' }} --no-restore
+  pack:
+    name: Create Package
+    runs-on: ubuntu-latest
+    needs: build
+    
+    steps:
+    
+      - name: Version Checker
+        uses: ./.github/actions/version-checker
+        id: version-checker
+        
+      - name: Pack Release
+        if: ${{ github.ref == 'main' }}
+        run: |
+          dotnet pack --no-build --no-restore \
+          --output package \
+          --configuration Release \
+        
+      - name: Create Timestamp
+        if: ${{ github.ref == 'rc' }}
+        id: timestamp
+        run: echo "timestamp=$(date +%s)" >> $GITHUB_OUTPUT
+        
+      - name: Pack RC
+        if: ${{ github.ref == 'rc' }}
+        run: | 
+          dotnet pack --no-build --no-restore \
+          --output package \
+          --configuration Debug \
+          --version-suffix ${{ github.timestamp.outputs.timestamp }}-rc \
+        
+      - name: Push Release
+        run: |
+          dotnet nuget push \
+          package/${{ secrets.PROJECT_NAMESPACE }}.${{ github.version-checker.outputs.version }}.nupkg \
+          --api-key ${{ secrets.NUGET_API_KEY }} \
+      - name: Push RC
+        run: |
+          dotnet nuget push \
+          package/${{ secrets.PROJECT_NAMESPACE }}.${{ github.version-checker.outputs.version }}.${{ github.timestamp.outputs.timestamp }}-rc.nupkg \
+          --api-key ${{ secrets.NUGET_API_KEY }}
+
