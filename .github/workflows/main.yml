@@ -21,7 +21,7 @@ jobs:
         run: dotnet restore
         
       - name: Build
-        run: dotnet build --configuration ${{ github.ref == 'rc' && 'Debug' || 'Release' }} --no-restore
+        run: dotnet build --configuration ${{ github.ref_name == 'rc' && 'Debug' || 'Release' }} --no-restore
   pack:
     name: Create Package
     runs-on: ubuntu-latest
@@ -38,19 +38,19 @@ jobs:
         id: version-checker
         
       - name: Pack Release
-        if: ${{ github.ref == 'main' }}
+        if: ${{ github.ref_name == 'main' }}
         run: |
           dotnet pack --no-build --no-restore \
           --output package \
           --configuration Release \
         
       - name: Create Timestamp
-        if: ${{ github.ref == 'rc' }}
+        if: ${{ github.ref_name == 'rc' }}
         id: timestamp
         run: echo "timestamp=$(date +%s)" >> $GITHUB_OUTPUT
         
       - name: Pack RC
-        if: ${{ github.ref == 'rc' }}
+        if: ${{ github.ref_name == 'rc' }}
         run: | 
           dotnet pack --no-build --no-restore \
           --output package \
@@ -58,14 +58,14 @@ jobs:
           --version-suffix ${{ github.timestamp.outputs.timestamp }}-rc \
         
       - name: Push Release
-        if: ${{ github.ref == 'main' }}
+        if: ${{ github.ref_name == 'main' }}
         run: |
           dotnet nuget push \
           package/${{ secrets.PROJECT_NAMESPACE }}.${{ github.version-checker.outputs.version }}.nupkg \
           --api-key ${{ secrets.NUGET_API_KEY }} \
 
       - name: Push RC
-        if: ${{ github.ref == 'rc' }}
+        if: ${{ github.ref_name == 'rc' }}
         run: |
           dotnet nuget push \
           package/${{ secrets.PROJECT_NAMESPACE }}.${{ github.version-checker.outputs.version }}.${{ github.timestamp.outputs.timestamp }}-rc.nupkg \
@@ -83,7 +83,7 @@ jobs:
       - uses: ./.github/actions/release-creator
         with:
           version: ${{ needs.pack.outputs.version }}
-          branch: ${{ github.ref }}
+          branch: ${{ github.ref_name }}
           github-token: ${{ github.token }}
         
 
