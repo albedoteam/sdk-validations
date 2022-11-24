@@ -77,6 +77,6 @@ jobs:
 
       - uses: ./.github/actions/release-creator
         with:
-        version: ${{ needs.pack.outputs.version }}
+          version: ${{ needs.pack.outputs.version }}
         
 
