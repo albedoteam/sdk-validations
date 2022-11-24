@@ -18,7 +18,7 @@ jobs:
         uses: actions/setup-dotnet@v3
         
       - name: Add GitHub NuGet Source
-        run: dotnet nuget add source $source -n github --username albedocodes --password $api_key
+        run: dotnet nuget add source $source -n github --username albedocodes --password $api_key --store-password-in-clear-text
         env:
           source: ${{ secrets.NUGET_SOURCE }}
           api_key: ${{ secrets.NUGET_API_KEY }}
