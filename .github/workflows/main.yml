@@ -39,6 +39,7 @@ jobs:
         if: ${{ github.ref_name == 'main' }}
         run: |
           dotnet pack --no-build --no-restore \
+          --output package \
           --configuration Release \
         
       - name: Create Timestamp
@@ -50,6 +51,7 @@ jobs:
         if: ${{ github.ref_name == 'rc' }}
         run: | 
           dotnet pack --no-build --no-restore \
+          --output package \
           --configuration Debug \
           /p:Version=$version.$timestamp-rc \
         env:
@@ -60,7 +62,7 @@ jobs:
         if: ${{ github.ref_name == 'main' }}
         run: |
           dotnet nuget push \
-          $namespace.$version.nupkg \
+          package/$namespace.$version.nupkg \
           --source $source \
           --api-key $api_key \
         env:
@@ -73,7 +75,7 @@ jobs:
         if: ${{ github.ref_name == 'rc' }}
         run: |
           dotnet nuget push \
-          $namespace.$version.$timestamp-rc.nupkg \
+          package/$namespace.$version.$timestamp-rc.nupkg \
           --source $source \
           --api-key $api_key \
         env:
