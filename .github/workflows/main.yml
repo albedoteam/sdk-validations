@@ -18,9 +18,9 @@ jobs:
         uses: actions/setup-dotnet@v3
         
       - name: Add GitHub NuGet Source
-        run: dotnet nuget add source $github -n github --password $api_key
+        run: dotnet nuget add source $source -n github --password $api_key
         env:
-          github: ${{ secrets.NUGET_SOURCE }}
+          source: ${{ secrets.NUGET_SOURCE }}
           api_key: ${{ secrets.NUGET_API_KEY }}
 
       - name: Restore Packages
