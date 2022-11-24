@@ -4,6 +4,7 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <AssemblyName>AlbedoTeam.Sdk.Validations</AssemblyName>
         <RootNamespace>AlbedoTeam.Sdk.Validations</RootNamespace>
+		<Version>1.0.0</Version>
     </PropertyGroup>
 
     <ItemGroup>
