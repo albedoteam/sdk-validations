@@ -72,8 +72,10 @@ jobs:
     release:
       - name: Create Release & Tag
         needs: pack
-        uses: ./.github/actions/release-creator
+        steps:
+        - name: Create Tag and Release
+          uses: ./.github/actions/release-creator
           with:
-            version: ${{ needs.pack.outputs.version }}
+          version: ${{ needs.pack.outputs.version }}
         
 
