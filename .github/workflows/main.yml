@@ -60,24 +60,28 @@ jobs:
         if: ${{ github.ref_name == 'main' }}
         run: |
           dotnet nuget push \
-          --source github \
           $namespace.$version.nupkg \
+          --source $source \
+          --api-key $api_key \
         env:
           version: ${{ steps.version-checker.outputs.version }}
           namespace: ${{ secrets.PROJECT_NAMESPACE }}
+          source: ${{ secrets.NUGET_SOURCE }}
           api_key: ${{ secrets.NUGET_API_KEY }}
-          nuget-source: ${{ secrets.NUGET_SOURCE }}
 
       - name: Push RC
         if: ${{ github.ref_name == 'rc' }}
         run: |
           dotnet nuget push \
-          --source github \
           $namespace.$version.$timestamp-rc.nupkg \
+          --source $source \
+          --api-key $api_key \
         env:
           version: ${{ steps.version-checker.outputs.version }}
           timestamp: ${{ steps.timestamp.outputs.timestamp }}
           namespace: ${{ secrets.PROJECT_NAMESPACE }}
+          source: ${{ secrets.NUGET_SOURCE }}
+          api_key: ${{ secrets.NUGET_API_KEY }}
 
       - uses: ./.github/actions/release-creator
         if: ${{ github.ref_name == 'main' }}
