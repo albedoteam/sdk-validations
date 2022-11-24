@@ -9,7 +9,7 @@ inputs:
     type: string
     required: true
     description: Branch name
-  github-token:
+  github_token:
     type: string
     required: true
     description: GitHub Token
@@ -21,7 +21,7 @@ runs:
       if: ${{ inputs.branch == 'main' }}
       uses: actions/create-release
       env:
-        GITHUB_TOKEN: ${{ inputs.github-token }}
+        GITHUB_TOKEN: ${{ inputs.github_token }}
       with:
         tag_name: ${{ inputs.version }}
         release_name: v${{ inputs.version }}
