@@ -8,7 +8,7 @@ on:
       
 jobs:
   build:
-    name: Build
+    name: Build, Pack and Push
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -18,7 +18,7 @@ jobs:
         uses: actions/setup-dotnet@v3
         
       - name: Add GitHub NuGet Source
-        run: dotnet nuget add source $source -n github --password $api_key
+        run: dotnet nuget add source $source -n github --username albedocodes --password $api_key
         env:
           source: ${{ secrets.NUGET_SOURCE }}
           api_key: ${{ secrets.NUGET_API_KEY }}
