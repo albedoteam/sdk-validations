@@ -17,11 +17,19 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         
-      - name: Restore Packages
-        run: dotnet restore -s $nuget -s $github-nuget
+      - name: Add NuGet Source
+        run: dotnet nuget add source $nuget -n nuget
         env:
           nuget: https://api.nuget.org/v3/index.json
-          github-nuget: https://nuget.pkg.github.com/albedoteam/index.json
+
+      - name: Add GitHub NuGet Source
+        run: dotnet nuget add source $github -n github --password $api_key
+        env:
+          github: ${{ secrets.NUGET_SOURCE }}
+          api_key: ${{ secrets.NUGET_API_KEY }}
+
+      - name: Restore Packages
+        run: dotnet restore -s nuget -s github
         
       - name: Build
         run: dotnet build --configuration $configuration --no-restore
@@ -36,7 +44,6 @@ jobs:
         if: ${{ github.ref_name == 'main' }}
         run: |
           dotnet pack --no-build --no-restore \
-          --output package \
           --configuration Release \
         
       - name: Create Timestamp
@@ -48,7 +55,6 @@ jobs:
         if: ${{ github.ref_name == 'rc' }}
         run: | 
           dotnet pack --no-build --no-restore \
-          --output package \
           --configuration Debug \
           /p:Version=$version.$timestamp-rc \
         env:
@@ -59,26 +65,24 @@ jobs:
         if: ${{ github.ref_name == 'main' }}
         run: |
           dotnet nuget push \
-          --source https://nuget.pkg.github.com/albedoteam/index.json \
-          package/$namespace.$version.nupkg \
-          --api-key $api-key \
+          --source github \
+          $namespace.$version.nupkg \
         env:
           version: ${{ steps.version-checker.outputs.version }}
           namespace: ${{ secrets.PROJECT_NAMESPACE }}
-          api-key: ${{ secrets.NUGET_API_KEY }}
+          api_key: ${{ secrets.NUGET_API_KEY }}
+          nuget-source: ${{ secrets.NUGET_SOURCE }}
 
       - name: Push RC
         if: ${{ github.ref_name == 'rc' }}
         run: |
           dotnet nuget push \
-          --source https://nuget.pkg.github.com/albedoteam/index.json \
-          package/$namespace.$version.$timestamp-rc.nupkg \
-          --api-key ${{ secrets.NUGET_API_KEY }} \
+          --source github \
+          $namespace.$version.$timestamp-rc.nupkg \
         env:
           version: ${{ steps.version-checker.outputs.version }}
           timestamp: ${{ steps.timestamp.outputs.timestamp }}
           namespace: ${{ secrets.PROJECT_NAMESPACE }}
-          api-key: ${{ secrets.NUGET_API_KEY }}
 
       - uses: ./.github/actions/release-creator
         if: ${{ github.ref_name == 'main' }}
