@@ -69,13 +69,13 @@ jobs:
           package/${{ secrets.PROJECT_NAMESPACE }}.${{ github.version-checker.outputs.version }}.${{ github.timestamp.outputs.timestamp }}-rc.nupkg \
           --api-key ${{ secrets.NUGET_API_KEY }}
 
-    release:
-      - name: Create Release & Tag
-        needs: pack
-        steps:
-        - name: Create Tag and Release
-          uses: ./.github/actions/release-creator
-          with:
-          version: ${{ needs.pack.outputs.version }}
+  release:
+    name: Create Release & Tag
+    needs: pack
+    steps:
+
+      - uses: ./.github/actions/release-creator
+        with:
+        version: ${{ needs.pack.outputs.version }}
         
 
