@@ -58,7 +58,8 @@ jobs:
           version: ${{ steps.version-checker.outputs.version }}
           timestamp: ${{ steps.timestamp.outputs.timestamp }}
         
-      - uses: ./.github/actions/release-creator
+      - name: Create Tag and Release
+        uses: ./.github/actions/release-creator
         if: ${{ github.ref_name == 'main' }}
         with:
           version: ${{ steps.version-checker.outputs.version }}

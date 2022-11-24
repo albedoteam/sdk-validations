@@ -14,7 +14,7 @@ runs:
   steps:
   
   - name: Create tag and GitHub release
-    uses: actions/create-release
+    uses: actions/create-release@master
     env:
       GITHUB_TOKEN: ${{ inputs.github_token }}
     with:
