@@ -1,9 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <AssemblyName>AlbedoTeam.Sdk.Validations</AssemblyName>
         <RootNamespace>AlbedoTeam.Sdk.Validations</RootNamespace>
+		<Version>1.0.1</Version>
+		<RepositoryUrl>https://github.com/albedoteam/sdk-validations</RepositoryUrl>
     </PropertyGroup>
 
     <ItemGroup>
