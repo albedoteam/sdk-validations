@@ -56,7 +56,7 @@ jobs:
         if: ${{ github.ref_name == 'main' }}
         run: |
           dotnet nuget push \
-          --source https://npm.pkg.github.com/albedoteam/index.json \
+          --source https://nuget.pkg.github.com/albedoteam/index.json \
           package/$namespace.$version.nupkg \
           --api-key $api-key \
         env:
@@ -68,7 +68,7 @@ jobs:
         if: ${{ github.ref_name == 'rc' }}
         run: |
           dotnet nuget push \
-          --source https://npm.pkg.github.com/albedoteam/index.json \
+          --source https://nuget.pkg.github.com/albedoteam/index.json \
           package/$namespace.$version.$timestamp-rc.nupkg \
           --api-key ${{ secrets.NUGET_API_KEY }} \
         env:
