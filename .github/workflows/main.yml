@@ -34,7 +34,7 @@ jobs:
         uses: actions/checkout@v3
         
       - name: Version Checker
-        uses: ./.github/actions/version-checker
+        uses: ../version-checker
         id: version-checker
         
       - name: Pack Release
@@ -75,7 +75,7 @@ jobs:
     needs: pack
     steps:
 
-      - uses: ./.github/actions/release-creator
+      - uses: ../release-creator
         with:
           version: ${{ needs.pack.outputs.version }}
         
