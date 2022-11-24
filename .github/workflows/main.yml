@@ -49,8 +49,8 @@ jobs:
           --configuration Debug \
           /p:Version=$version.$timestamp-rc \
         env:
-          version: ${{ github.version-checker.outputs.version }}
-          timestamp: ${{ github.timestamp.outputs.timestamp }}
+          version: ${{ steps.version-checker.outputs.version }}
+          timestamp: ${{ steps.timestamp.outputs.timestamp }}
         
       - name: Push Release
         if: ${{ github.ref_name == 'main' }}
@@ -59,7 +59,7 @@ jobs:
           package/$namespace.$version.nupkg \
           --api-key $api-key \
         env:
-          version: ${{ github.version-checker.outputs.version }}
+          version: ${{ steps.version-checker.outputs.version }}
           namespace: ${{ secrets.PROJECT_NAMESPACE }}
           api-key: ${{ secrets.NUGET_API_KEY }}
 
@@ -70,8 +70,8 @@ jobs:
           package/$namespace.$version.$timestamp-rc.nupkg \
           --api-key ${{ secrets.NUGET_API_KEY }} \
         env:
-          version: ${{ github.version-checker.outputs.version }}
-          timestamp: ${{ github.timestamp.outputs.timestamp }}
+          version: ${{ steps.version-checker.outputs.version }}
+          timestamp: ${{ steps.timestamp.outputs.timestamp }}
           namespace: ${{ secrets.PROJECT_NAMESPACE }}
           api-key: ${{ secrets.NUGET_API_KEY }}
 
