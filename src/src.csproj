@@ -5,6 +5,7 @@
         <AssemblyName>AlbedoTeam.Sdk.Validations</AssemblyName>
         <RootNamespace>AlbedoTeam.Sdk.Validations</RootNamespace>
 		<Version>1.0.1</Version>
+		<RepositoryUrl>https://nuget.pkg.github.com/albedoteam/index.json</RepositoryUrl>
     </PropertyGroup>
 
     <ItemGroup>
