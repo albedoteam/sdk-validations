@@ -33,7 +33,7 @@ jobs:
         uses: actions/checkout@v3
         
       - name: Version Checker
-        uses: ./.github/actions/version-checker@${{ github.ref }}
+        uses: ./.github/actions/version-checker
         id: version-checker
         
       - name: Pack Release
